@@ -1,4 +1,8 @@
 require 'adhearsion'
+
+require 'coveralls'
+Coveralls.wear!
+
 require 'adhearsion_cpa'
 
 RSpec.configure do |config|
