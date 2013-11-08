@@ -18,6 +18,26 @@ gem 'punchblock', github: "adhearsion/punchblock", branch: "feature/cpa_fax"
 
 ## Usage
 
+```ruby
+class BeepOrNoBeepController < Adhearsion::CallController
+  def run
+    answer
+    say "Try to imitate a fax machine"
+    tone = detect_tone(:fax, timeout: 5)
+    if tone
+      say "Good job! You sound just like a #{tone.type}"
+    else
+      say "Nope, you didn't make a convincing enough beep"
+    end
+  end
+end
+```
+
+You can also watch for more than one tone type:
+```ruby
+say "Something is beeping" if detect_tone(:fax, :modem, :beep, timeout: 5)
+```
+
 ## More Information
 
 Specification: [rayo-cpa](https://github.com/rayo/xmpp/blob/rayo/extensions/inbox/rayo-cpa.xml)
