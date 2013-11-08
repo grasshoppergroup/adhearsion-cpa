@@ -3,7 +3,7 @@ module AdhearsionCpa
 
     init :adhearsion_cpa do
       Adhearsion::CallController.class_eval do
-        include AdhearsionFax::ControllerMethods
+        include AdhearsionCpa::ControllerMethods
       end
 
       logger.info "Adhearsion-CPA has been loaded"
