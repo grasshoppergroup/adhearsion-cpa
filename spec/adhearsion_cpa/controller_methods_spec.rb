@@ -18,7 +18,7 @@ module AdhearsionCpa
         end
 
         it "detects a beep" do
-          mock_call.should_receive(:write_and_await_response).with expected_component, 5000
+          mock_call.should_receive(:write_and_await_response).with expected_component
           Punchblock::Component::Input.any_instance.should_receive(:complete_event).and_return mock_complete_event
 
           subject.detect_tone(:beep, timeout: 5).type.should == "beep"
@@ -35,7 +35,7 @@ module AdhearsionCpa
         end
 
         it "detects which tone" do
-          mock_call.should_receive(:write_and_await_response).with(expected_component, 5000).and_return mock_signal
+          mock_call.should_receive(:write_and_await_response).with(expected_component).and_return mock_signal
           Punchblock::Component::Input.any_instance.should_receive(:complete_event).and_return mock_complete_event
 
           subject.detect_tone(:beep, :modem, timeout: 5).type.should == :beep
@@ -46,7 +46,7 @@ module AdhearsionCpa
         let(:expected_grammars) { [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:beep:1?terminate=true") ] }
 
         it "returns nil" do
-          mock_call.should_receive(:write_and_await_response).with(expected_component, 5000).and_raise Adhearsion::Call::CommandTimeout
+          mock_call.should_receive(:write_and_await_response).with(expected_component).and_raise Timeout::Error
           Punchblock::Component::Input.any_instance.should_receive(:executing?).and_return true
           Punchblock::Component::Input.any_instance.should_receive :stop!
 
@@ -62,7 +62,7 @@ module AdhearsionCpa
         end
 
         it "encodes them in the grammar URL" do
-          mock_call.should_receive(:write_and_await_response).with expected_component, 5000
+          mock_call.should_receive(:write_and_await_response).with expected_component
           Punchblock::Component::Input.any_instance.should_receive(:complete_event).and_return mock_complete_event
 
           subject.detect_tone :speech, maxTime: 4000, minSpeechDuration: 4000, timeout: 5
@@ -78,7 +78,7 @@ module AdhearsionCpa
         end
 
         it "encodes the individual and group options in the grammar URL" do
-          mock_call.should_receive(:write_and_await_response).with expected_component, 5000
+          mock_call.should_receive(:write_and_await_response).with expected_component
           Punchblock::Component::Input.any_instance.should_receive(:complete_event).and_return mock_complete_event
 
           subject.detect_tone({speech: {maxTime: 4000, minSpeechDuration: 4000}, beep: {}}, timeout: 5, foo: :bar)
@@ -97,7 +97,7 @@ module AdhearsionCpa
         mock_component.should_receive(:register_event_handler).with Punchblock::Component::Input::Signal do |&block|
           @on_detect_block = block
         end
-        mock_call.should_receive(:write_and_await_response).with mock_component, 5000
+        mock_call.should_receive(:write_and_await_response).with mock_component
       end
 
       context "watches in the background" do

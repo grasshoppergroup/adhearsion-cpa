@@ -15,14 +15,14 @@ module AdhearsionCpa
         yield event if block_given?
       end if async?
 
-      call.write_and_await_response component, timeout if call_alive?
+      call.write_and_await_response component if call_alive?
 
       if async?
         component
       else
-        component.complete_event.reason
+        component.complete_event(timeout).reason
       end
-    rescue Adhearsion::Call::CommandTimeout
+    rescue Timeout::Error
       @component.stop! if @component && @component.executing?
       nil
     end
@@ -31,9 +31,7 @@ module AdhearsionCpa
 
     def process(opts)
       @async   = opts.delete :async
-      @timeout = opts.delete(:timeout) || 1
-      @timeout = nil if @timeout == -1
-      @timeout *= 1_000 if @timeout
+      @timeout = opts.delete :timeout
       opts[:terminate] == false ? opts.delete(:terminate) : opts[:terminate] = true
 
       @options = opts
