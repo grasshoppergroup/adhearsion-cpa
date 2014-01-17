@@ -87,7 +87,7 @@ module AdhearsionCpa
     end
 
     describe "#detect_tone!" do
-      let(:mock_component) { double Punchblock::Component::Input }
+      let(:mock_component) { double Punchblock::Component::Input, executing?: true }
 
       before do
         Punchblock::Component::Input.should_receive(:new).
@@ -106,12 +106,13 @@ module AdhearsionCpa
         end
 
         it "detects the dtmf" do
-          detector = subject.detect_tone!(:dtmf, timeout: 5) { |tone| tone.type }
+          detector = subject.detect_tone!(:dtmf, timeout: 0.02) { |tone| tone.type }
           detector.should == mock_component
-
-          sleep 0.005
           mock_signal.should_receive :type
           @on_detect_block.call mock_signal
+
+          mock_component.should_receive :stop!
+          sleep 0.03
         end
       end
 
@@ -121,13 +122,15 @@ module AdhearsionCpa
         end
 
         it "watches repeatedly in the background" do
-          detector = subject.detect_tone!(:dtmf, timeout: 5, terminate: false) { |tone| tone.type }
+          detector = subject.detect_tone!(:dtmf, timeout: 0.02, terminate: false) { |tone| tone.type }
           detector.should == mock_component
 
-          sleep 0.005
           mock_signal.should_receive(:type).twice
           @on_detect_block.call mock_signal
           @on_detect_block.call mock_signal
+
+          mock_component.should_receive :stop!
+          sleep 0.03
         end
       end
     end

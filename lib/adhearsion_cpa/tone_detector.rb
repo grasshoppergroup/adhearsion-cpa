@@ -1,7 +1,10 @@
 module AdhearsionCpa
   class ToneDetector
+    include Celluloid
 
     attr_accessor :tones, :timeout
+
+    execute_block_on_receiver :detect_tones
 
     def initialize(controller)
       @controller = controller
@@ -18,12 +21,18 @@ module AdhearsionCpa
       call.write_and_await_response component if call_alive?
 
       if async?
+        after(timeout) do
+          if component_running?
+            component.stop!
+          end
+        end
+
         component
       else
         component.complete_event(timeout).reason
       end
     rescue Timeout::Error
-      component.stop! if component && component.executing?
+      component.stop! if component_running?
       nil
     end
 
@@ -78,6 +87,10 @@ module AdhearsionCpa
 
     def call_alive?
       call && call.active?
+    end
+
+    def component_running?
+      component && component.executing?
     end
   end
 end
