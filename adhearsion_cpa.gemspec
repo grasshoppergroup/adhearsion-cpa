@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
 
   s.add_runtime_dependency %q<adhearsion>, ["~> 2.4"]
+  s.add_runtime_dependency %q<adhearsion>, ["~> 2.2"]
   s.add_runtime_dependency %q<activesupport>, [">= 3.0.10"]
 
   s.add_development_dependency %q<coveralls>, ['>= 0']
