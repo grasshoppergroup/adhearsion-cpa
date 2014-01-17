@@ -1,6 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/grasshoppergroup/adhearsion-cpa.png?branch=master)](http://travis-ci.org/grasshoppergroup/adhearsion-cpa) [![Coverage Status](https://coveralls.io/repos/grasshoppergroup/adhearsion-cpa/badge.png?branch=master)](https://coveralls.io/r/grasshoppergroup/adhearsion-cpa?branch=master)
-
-# Adhearsion-CPA
+# Adhearsion-CPA [![Build Status](https://secure.travis-ci.org/grasshoppergroup/adhearsion-cpa.png?branch=master)](http://travis-ci.org/grasshoppergroup/adhearsion-cpa) [![Coverage Status](https://coveralls.io/repos/grasshoppergroup/adhearsion-cpa/badge.png?branch=master)](https://coveralls.io/r/grasshoppergroup/adhearsion-cpa?branch=master) [![Code Climate](https://codeclimate.com/github/grasshoppergroup/adhearsion-cpa.png)](https://codeclimate.com/github/grasshoppergroup/adhearsion-cpa)
 
 This plugin aims to provide CPA detection..
 
