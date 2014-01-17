@@ -8,7 +8,7 @@ module AdhearsionCpa
 
     let(:expected_component)  { Punchblock::Component::Input.new mode: :cpa, grammars: expected_grammars }
     let(:mock_complete_event) { double 'Event', reason: mock_signal }
-        let(:mock_signal)     { double 'Signal', type: "dtmf" }
+    let(:mock_signal)     { double 'Signal', type: "dtmf" }
 
     describe "#detect_tone" do
       context "when watching for a beep" do
@@ -17,7 +17,7 @@ module AdhearsionCpa
           [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:beep:1?terminate=true") ]
         end
 
-        it "detects a fax" do
+        it "detects a beep" do
           mock_call.should_receive(:write_and_await_response).with expected_component, 5000
           Punchblock::Component::Input.any_instance.should_receive(:complete_event).and_return mock_complete_event
 
@@ -42,7 +42,7 @@ module AdhearsionCpa
         end
       end
 
-      context "with a timeout" do
+      context "when timing out" do
         let(:expected_grammars) { [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:beep:1?terminate=true") ] }
 
         it "returns nil" do
