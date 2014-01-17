@@ -12,9 +12,29 @@ This plugin aims to provide CPA detection..
 
 ## Requirements
 
-[Punchblock](https://github.com/adhearsion/punchblock) 2.21 or greater.
+* [Punchblock](https://github.com/adhearsion/punchblock) 2.21 or greater.
+* Recent build of Freeswitch
+* Recent build of Mod_rayo that includes CPA support
+* Any modules needed for detection
 
 ## Usage
+
+### Supported detectors
+
+- `beep` - Detect a beep.
+- `dtmf` - Detect DTMF tones.
+- `vad` - Detect voice activity.
+- `speech` - Detect speech and decide human or machine.
+- `fax-ced` - Detect a fax CED tone.
+- `fax-cng` - Detect a fax CNG tone.
+- `ring` - Detect a ringing tone.
+- `busy` - Detect a busy tone.
+- `congestion` - Detect a congestion tone.
+- `sit` - Detect a Special Information Tone.
+- `modem` - Detect a modem tone.
+- `offhook` - Detect an off-hook tone.
+
+All detectors require the appropiate modules loaded in Freeswitch, and configured in rayo.conf.xml.
 
 ### Basic
 
@@ -80,15 +100,14 @@ end
 
 ## More Information
 
-Rayo CPA Specification: [XEP-0341: Rayo CPA](http://xmpp.org/extensions/xep-0341.html)
-Mod_rayo CPA Documentation: [FS Wiki](https://wiki.freeswitch.org/wiki/Mod_rayo#call_progress_analysis_settings)
+* [XEP-0341: Rayo CPA](http://xmpp.org/extensions/xep-0341.html)
+* [Mod_rayo CPA Documentation](https://wiki.freeswitch.org/wiki/Mod_rayo#call_progress_analysis_settings)
 
 ## Credits
 
-Original author: [Justin Aiken](https://github.com/JustinAiken)
-
-Developed by [Mojo Lingo](http://mojolingo.com) in partnership with [Grasshopper](http://http://grasshopper.com/).
-Thanks to [Grasshopper](http://http://grasshopper.com/) for sponsorship of Adhearsion-CPA.
+* Original author: [Justin Aiken](https://github.com/JustinAiken)
+* Developed by [Mojo Lingo](http://mojolingo.com) in partnership with [Grasshopper](http://http://grasshopper.com/).
+* Thanks to [Grasshopper](http://http://grasshopper.com/) for sponsorship of Adhearsion-CPA.
 
 ## Links
 
