@@ -34,7 +34,7 @@ module AdhearsionCpa
       @timeout = opts.delete(:timeout) || 1
       @timeout = nil if @timeout == -1
       @timeout *= 1_000 if @timeout
-      opts[:terminate] = true unless opts[:terminate] == false
+      opts[:terminate] == false ? opts.delete(:terminate) : opts[:terminate] = true
 
       @options = opts
     end

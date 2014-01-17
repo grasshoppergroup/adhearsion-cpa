@@ -8,7 +8,7 @@ module AdhearsionCpa
 
     let(:expected_component)  { Punchblock::Component::Input.new mode: :cpa, grammars: expected_grammars }
     let(:mock_complete_event) { double 'Event', reason: mock_signal }
-    let(:mock_signal)         { double 'Signal', type: :beep }
+        let(:mock_signal)     { double 'Signal', type: "dtmf" }
 
     describe "#detect_tone" do
       context "when watching for a beep" do
@@ -82,6 +82,52 @@ module AdhearsionCpa
           Punchblock::Component::Input.any_instance.should_receive(:complete_event).and_return mock_complete_event
 
           subject.detect_tone({speech: {maxTime: 4000, minSpeechDuration: 4000}, beep: {}}, timeout: 5, foo: :bar)
+        end
+      end
+    end
+
+    describe "#detect_tone!" do
+      let(:mock_component) { double Punchblock::Component::Input }
+
+      before do
+        Punchblock::Component::Input.should_receive(:new).
+          with(mode: :cpa, grammars: expected_grammars).
+          and_return mock_component
+
+        mock_component.should_receive(:register_event_handler).with Punchblock::Component::Input::Signal do |&block|
+          @on_detect_block = block
+        end
+        mock_call.should_receive(:write_and_await_response).with mock_component, 5000
+      end
+
+      context "watches in the background" do
+        let(:expected_grammars) do
+          [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:dtmf:1?terminate=true") ]
+        end
+
+        it "detects the dtmf" do
+          detector = subject.detect_tone!(:dtmf, timeout: 5) { |tone| tone.type }
+          detector.should == mock_component
+
+          sleep 0.005
+          mock_signal.should_receive :type
+          @on_detect_block.call mock_signal
+        end
+      end
+
+      context " with :terminate set to false" do
+        let(:expected_grammars) do
+          [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:dtmf:1") ]
+        end
+
+        it "watches repeatedly in the background" do
+          detector = subject.detect_tone!(:dtmf, timeout: 5, terminate: false) { |tone| tone.type }
+          detector.should == mock_component
+
+          sleep 0.005
+          mock_signal.should_receive(:type).twice
+          @on_detect_block.call mock_signal
+          @on_detect_block.call mock_signal
         end
       end
     end
