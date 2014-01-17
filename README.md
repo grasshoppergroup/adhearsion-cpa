@@ -61,6 +61,7 @@ detect_tone! :modem do |tone|
   logger.info "Call detected a tone"
   @sound.stop!
 end
+```
 
 #### Once or repeat
 
