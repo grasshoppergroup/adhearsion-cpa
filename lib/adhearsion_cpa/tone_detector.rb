@@ -23,7 +23,7 @@ module AdhearsionCpa
         component.complete_event(timeout).reason
       end
     rescue Timeout::Error
-      @component.stop! if @component && @component.executing?
+      component.stop! if component && component.executing?
       nil
     end
 
