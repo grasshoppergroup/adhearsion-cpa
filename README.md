@@ -10,7 +10,9 @@ This plugin aims to provide CPA detection..
 * Freeswitch with Event Socket - no
 * Freeswitch with [mod_rayo](https://wiki.freeswitch.org/wiki/Mod_rayo) - yes
 
-To use you'll need [punchblock](https://github.com/adhearsion/punchblock) 2.20 or greater.
+## Requirements
+
+[Punchblock](https://github.com/adhearsion/punchblock) 2.21 or greater.
 
 ## Usage
 
@@ -78,14 +80,14 @@ end
 
 ## More Information
 
-Rayo CPA Specification: [XEP-0341: Rayo CPA](http://xmpp.org/extensions/xep-0341.html)   
+Rayo CPA Specification: [XEP-0341: Rayo CPA](http://xmpp.org/extensions/xep-0341.html)
 Mod_rayo CPA Documentation: [FS Wiki](https://wiki.freeswitch.org/wiki/Mod_rayo#call_progress_analysis_settings)
 
 ## Credits
 
 Original author: [Justin Aiken](https://github.com/JustinAiken)
 
-Developed by [Mojo Lingo](http://mojolingo.com) in partnership with [Grasshopper](http://http://grasshopper.com/).   
+Developed by [Mojo Lingo](http://mojolingo.com) in partnership with [Grasshopper](http://http://grasshopper.com/).
 Thanks to [Grasshopper](http://http://grasshopper.com/) for sponsorship of Adhearsion-CPA.
 
 ## Links
