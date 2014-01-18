@@ -10,7 +10,8 @@ This plugin aims to provide CPA detection..
 
 ## Requirements
 
-* [Punchblock](https://github.com/adhearsion/punchblock) 2.21 or greater.
+* [Punchblock](https://github.com/adhearsion/punchblock) 2.21 or greater
+* [Adhearsion](https://github.com/adhearsion/adhearsion)'s current [develop](https://github.com/adhearsion/adhearsion/tree/develop) branch
 * Recent build of Freeswitch
 * Recent build of Mod_rayo that includes CPA support
 * Any modules needed for detection

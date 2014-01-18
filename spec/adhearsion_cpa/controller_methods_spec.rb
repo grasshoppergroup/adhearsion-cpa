@@ -3,7 +3,7 @@ require 'spec_helper'
 module AdhearsionCpa
   describe ControllerMethods do
 
-    let(:mock_call) { double 'Call', active?: true }
+    let(:mock_call) { Adhearsion::Call.new }
     subject { Adhearsion::CallController.new mock_call }
 
     let(:expected_component)  { Punchblock::Component::Input.new mode: :cpa, grammars: expected_grammars }
@@ -112,7 +112,7 @@ module AdhearsionCpa
           @on_detect_block.call mock_signal
 
           mock_component.should_receive :stop!
-          sleep 0.03
+          sleep 0.04
         end
       end
 
@@ -130,7 +130,7 @@ module AdhearsionCpa
           @on_detect_block.call mock_signal
 
           mock_component.should_receive :stop!
-          sleep 0.03
+          sleep 0.04
         end
       end
     end
