@@ -112,7 +112,7 @@ module AdhearsionCpa
           @on_detect_block.call mock_signal
 
           mock_component.should_receive :stop!
-          sleep 0.03
+          sleep 0.04
         end
       end
 
@@ -130,7 +130,7 @@ module AdhearsionCpa
           @on_detect_block.call mock_signal
 
           mock_component.should_receive :stop!
-          sleep 0.03
+          sleep 0.04
         end
       end
     end
