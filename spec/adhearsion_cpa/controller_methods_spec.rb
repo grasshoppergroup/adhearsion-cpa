@@ -132,6 +132,20 @@ module AdhearsionCpa
           mock_component.should_receive :stop!
           sleep 0.04
         end
+
+        context "without a timeout" do
+          it "doesn't ever stop.." do
+            detector = subject.detect_tone!(:dtmf, terminate: false) { |tone| tone.type }
+            detector.should == mock_component
+
+            mock_signal.should_receive(:type).twice
+            @on_detect_block.call mock_signal
+            @on_detect_block.call mock_signal
+
+            mock_component.should_not_receive :stop!
+            sleep 0.04
+          end
+        end
       end
     end
   end

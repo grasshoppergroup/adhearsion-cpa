@@ -22,7 +22,7 @@ module AdhearsionCpa
           if component_running?
             component.stop!
           end
-        end
+        end if timeout
 
         component
       else

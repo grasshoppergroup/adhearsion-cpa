@@ -23,7 +23,7 @@ module AdhearsionCpa
     # Begin asynchronous tone detection, and run the block when the tone is detected
     #
     # @example Asynchronous wait for a dtmf
-    #   detect_tone :dtmf, timeout: -1 { |detected| logger.info "Beep! Customer pushed #{detected.inspect}"}
+    #   detect_tone :dtmf { |detected| logger.info "Beep! Customer pushed #{detected.inspect}"}
     # @example Asynchronous wait for dtmf presses, running the block multiple times if multiple signals are detected
     def detect_tone!(*arguments)
       options = arguments.last.is_a?(Hash) && arguments.count > 1 ? arguments.pop : {}
