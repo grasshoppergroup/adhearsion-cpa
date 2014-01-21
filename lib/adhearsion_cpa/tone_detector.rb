@@ -11,9 +11,15 @@ module AdhearsionCpa
       @tones = tones
       process options
 
-      component.register_event_handler Punchblock::Component::Input::Signal do |event|
-        yield event if block_given?
-      end if async?
+      if async?
+        component.register_event_handler Punchblock::Component::Input::Signal do |event|
+          yield event if block_given?
+        end
+
+        component.register_event_handler Punchblock::Event::Complete do |event|
+          yield event.reason if block_given? && event.reason.is_a?(Punchblock::Component::Input::Signal)
+        end
+      end
 
       call.write_and_await_response component if call_alive?
 

@@ -7,8 +7,8 @@ module AdhearsionCpa
     subject { Adhearsion::CallController.new mock_call }
 
     let(:expected_component)  { Punchblock::Component::Input.new mode: :cpa, grammars: expected_grammars }
-    let(:mock_complete_event) { double 'Event', reason: mock_signal }
-    let(:mock_signal)     { double 'Signal', type: "dtmf" }
+    let(:mock_complete_event) { double Punchblock::Event::Complete, reason: mock_signal   }
+    let(:mock_signal)         { double Punchblock::Component::Input::Signal, type: "dtmf" }
 
     describe "#detect_tone" do
       context "when watching for a beep" do
@@ -95,12 +95,16 @@ module AdhearsionCpa
           and_return mock_component
 
         mock_component.should_receive(:register_event_handler).with Punchblock::Component::Input::Signal do |&block|
-          @on_detect_block = block
+          @on_detect_signal_block = block
         end
+        mock_component.should_receive(:register_event_handler).with Punchblock::Event::Complete do |&block|
+          @on_detect_complete_block = block
+        end
+
         mock_call.should_receive(:write_and_await_response).with mock_component
       end
 
-      context "watches in the background" do
+      context "with :terminate set to true" do
         let(:expected_grammars) do
           [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:dtmf:1?terminate=true") ]
         end
@@ -108,15 +112,16 @@ module AdhearsionCpa
         it "detects the dtmf" do
           detector = subject.detect_tone!(:dtmf, timeout: 0.02) { |tone| tone.type }
           detector.should == mock_component
+          mock_signal.should_receive(:is_a?).with(Punchblock::Component::Input::Signal).and_return true
           mock_signal.should_receive :type
-          @on_detect_block.call mock_signal
+          @on_detect_complete_block.call mock_complete_event
 
           mock_component.should_receive :stop!
           sleep 0.04
         end
       end
 
-      context " with :terminate set to false" do
+      context "with :terminate set to false" do
         let(:expected_grammars) do
           [ Punchblock::Component::Input::Grammar.new(url: "urn:xmpp:rayo:cpa:dtmf:1") ]
         end
@@ -126,11 +131,11 @@ module AdhearsionCpa
           detector.should == mock_component
 
           mock_signal.should_receive(:type).twice
-          @on_detect_block.call mock_signal
-          @on_detect_block.call mock_signal
+          @on_detect_signal_block.call mock_signal
+          @on_detect_signal_block.call mock_signal
 
           mock_component.should_receive :stop!
-          sleep 0.04
+          sleep 0.1
         end
 
         context "without a timeout" do
@@ -139,8 +144,8 @@ module AdhearsionCpa
             detector.should == mock_component
 
             mock_signal.should_receive(:type).twice
-            @on_detect_block.call mock_signal
-            @on_detect_block.call mock_signal
+            @on_detect_signal_block.call mock_signal
+            @on_detect_signal_block.call mock_signal
 
             mock_component.should_not_receive :stop!
             sleep 0.04
