@@ -18,6 +18,7 @@ module AdhearsionCpa
 
         component.register_event_handler Punchblock::Event::Complete do |event|
           yield event.reason if block_given? && event.reason.is_a?(Punchblock::Component::Input::Signal)
+          throw :pass
         end
       end
 
